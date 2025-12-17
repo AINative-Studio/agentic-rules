@@ -13,6 +13,9 @@ This template provides a standardized `.claude/` folder structure and `CLAUDE.md
 cp /path/to/agentic-rules/templates/claude-code/CLAUDE.md ./CLAUDE.md
 cp -r /path/to/agentic-rules/templates/claude-code/.claude ./.claude
 
+# Rename the example settings file
+mv .claude/settings.local.json.example .claude/settings.local.json
+
 # Edit CLAUDE.md to match your project
 # Edit .claude/settings.local.json to add project-specific permissions
 ```
@@ -28,8 +31,8 @@ Project memory file that Claude reads on every session. Contains:
 - Pre-commit checklist
 - Architecture patterns
 
-### .claude/settings.local.json
-Local permissions for Claude Code tools. Customize based on your project needs.
+### .claude/settings.local.json.example
+Local permissions template for Claude Code tools. Copy to `settings.local.json` and customize based on your project needs.
 
 ### .claude/commands/
 Custom slash commands for common workflows:
