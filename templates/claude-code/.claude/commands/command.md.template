@@ -1,0 +1,35 @@
+# {{COMMAND_NAME}}
+
+{{COMMAND_DESCRIPTION}}
+
+## Arguments
+
+- `$ARGUMENTS` - {{ARGUMENTS_DESCRIPTION}}
+
+## Usage
+
+```
+/{{COMMAND_SLUG}} <arguments>
+```
+
+## Implementation
+
+{{COMMAND_IMPLEMENTATION}}
+
+## Examples
+
+### Example 1: {{EXAMPLE_1_NAME}}
+
+```
+/{{COMMAND_SLUG}} {{EXAMPLE_1_ARGS}}
+```
+
+Expected result: {{EXAMPLE_1_RESULT}}
+
+### Example 2: {{EXAMPLE_2_NAME}}
+
+```
+/{{COMMAND_SLUG}} {{EXAMPLE_2_ARGS}}
+```
+
+Expected result: {{EXAMPLE_2_RESULT}}

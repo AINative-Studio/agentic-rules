@@ -1,0 +1,46 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git merge-base:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(pytest:*)",
+      "Bash(curl:*)",
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(env)",
+      "mcp__github__list_issues",
+      "mcp__github__get_issue",
+      "mcp__github__update_issue",
+      "mcp__github__create_pull_request",
+      "mcp__github__get_pull_request",
+      "mcp__github__add_issue_comment",
+      "mcp__zerodb__zerodb_store_memory",
+      "mcp__zerodb__zerodb_search_memory",
+      "mcp__zerodb__zerodb_list_tables",
+      "mcp__zerodb__zerodb_get_project_stats",
+      "Read({{PROJECT_PATH}}/**)",
+      "Read({{HOME_PATH}}/.claude/**)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(sudo rm:*)",
+      "Bash(chmod 777:*)"
+    ],
+    "ask": [
+      "Bash(sudo:*)",
+      "Bash(docker:*)",
+      "mcp__github__merge_pull_request"
+    ]
+  }
+}

@@ -1,0 +1,99 @@
+# {{PROJECT_NAME}}
+
+**Tech Stack**: {{TECH_STACK}}
+**Repository**: {{REPOSITORY_URL}}
+**Last Updated**: {{LAST_UPDATED}}
+
+## Project Overview
+
+{{PROJECT_DESCRIPTION}}
+
+## Architecture Patterns
+
+### Data Storage
+- **Primary Database**: {{DATABASE_TYPE}}
+- **Vector Storage**: {{VECTOR_STORAGE}}
+- **Caching**: {{CACHING_STRATEGY}}
+
+### API Design
+- **Style**: {{API_STYLE}}
+- **Authentication**: {{AUTH_METHOD}}
+- **Versioning**: {{API_VERSIONING}}
+
+## Directory Structure
+
+```
+{{PROJECT_ROOT}}/
+├── {{DIR_1}}/          # {{DIR_1_DESC}}
+├── {{DIR_2}}/          # {{DIR_2_DESC}}
+├── {{DIR_3}}/          # {{DIR_3_DESC}}
+└── {{DIR_4}}/          # {{DIR_4_DESC}}
+```
+
+## Coding Conventions
+
+### Naming
+- **Files**: {{FILE_NAMING}}
+- **Functions**: {{FUNCTION_NAMING}}
+- **Variables**: {{VARIABLE_NAMING}}
+- **Constants**: {{CONSTANT_NAMING}}
+
+### Code Style
+- {{CODE_STYLE_1}}
+- {{CODE_STYLE_2}}
+- {{CODE_STYLE_3}}
+
+## Critical Files
+
+| File | Purpose |
+|------|---------|
+| `{{CRITICAL_FILE_1}}` | {{CRITICAL_FILE_1_DESC}} |
+| `{{CRITICAL_FILE_2}}` | {{CRITICAL_FILE_2_DESC}} |
+| `{{CRITICAL_FILE_3}}` | {{CRITICAL_FILE_3_DESC}} |
+
+## Development Workflow
+
+### Setup
+```bash
+{{SETUP_COMMANDS}}
+```
+
+### Running Locally
+```bash
+{{RUN_COMMANDS}}
+```
+
+### Testing
+```bash
+{{TEST_COMMANDS}}
+```
+
+## Environment Variables
+
+Required environment variables are defined in `.env.example`. Copy to `.env` and configure:
+
+```bash
+cp .env.example .env
+```
+
+Key variables:
+- `{{ENV_VAR_1}}` - {{ENV_VAR_1_DESC}}
+- `{{ENV_VAR_2}}` - {{ENV_VAR_2_DESC}}
+- `{{ENV_VAR_3}}` - {{ENV_VAR_3_DESC}}
+
+## MCP Integration
+
+This project uses the following MCP servers:
+- **ZeroDB**: Persistent memory and vector storage
+- **GitHub**: Issue tracking and PR management
+- **Strapi**: Content management (if applicable)
+
+## Notes for Claude
+
+- {{CLAUDE_NOTE_1}}
+- {{CLAUDE_NOTE_2}}
+- {{CLAUDE_NOTE_3}}
+
+---
+
+*Auto-generated from template. Update as project evolves.*
