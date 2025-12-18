@@ -146,9 +146,38 @@ All templates use `{{PLACEHOLDER}}` syntax for easy find-and-replace:
 | `{{ZERODB_API_KEY}}` | From AINative dashboard |
 | `{{PORT}}` | Dev server port (e.g., 8000) |
 
+## Automated Setup
+
+Use the setup script for interactive configuration:
+
+```bash
+cd templates/claude-code/scripts
+
+# Check current configuration status
+./claude-code-setup.sh --check
+
+# Full installation (MCP servers, agents, commands)
+./claude-code-setup.sh --install
+
+# Apply permissions to current project
+./claude-code-setup.sh --init-project
+
+# Configure MCP servers only
+./claude-code-setup.sh --mcp-only
+```
+
+The script will prompt for credentials interactively - no secrets are hardcoded.
+
+### Scripts Included
+
+| File | Purpose |
+|------|---------|
+| `scripts/claude-code-setup.sh` | Interactive setup wizard |
+| `scripts/merged-permissions.json` | Comprehensive permissions template |
+
 ## Related Documentation
 
-- [LLM Project Setup Prompt](../docs/LLM_PROJECT_SETUP_PROMPT.md) - Universal setup guide for any LLM
+- [LLM Project Setup Prompt](../../docs/LLM_PROJECT_SETUP_PROMPT.md) - Universal setup guide for any LLM
 - [Claude Code Documentation](https://docs.anthropic.com/claude-code)
 - [AINative Studio](https://ainative.studio)
 
