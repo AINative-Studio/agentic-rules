@@ -1,0 +1,42 @@
+{
+  "mcpServers": {
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "{{GITHUB_TOKEN}}"
+      }
+    },
+    "zerodb": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "ainative-zerodb-mcp-server"],
+      "env": {
+        "ZERODB_API_URL": "https://api.ainative.studio",
+        "ZERODB_USERNAME": "{{ZERODB_USERNAME}}",
+        "ZERODB_PASSWORD": "{{ZERODB_PASSWORD}}",
+        "ZERODB_PROJECT_ID": "{{ZERODB_PROJECT_ID}}"
+      }
+    },
+    "ainative-strapi": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "strapi-mcp"],
+      "env": {
+        "STRAPI_URL": "{{STRAPI_URL}}",
+        "STRAPI_API_TOKEN": "{{STRAPI_API_TOKEN}}"
+      }
+    },
+    "ainative-strapi-new": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "ainative-strapi-mcp-server"],
+      "env": {
+        "STRAPI_URL": "{{STRAPI_URL}}",
+        "STRAPI_ADMIN_EMAIL": "{{STRAPI_ADMIN_EMAIL}}",
+        "STRAPI_ADMIN_PASSWORD": "{{STRAPI_ADMIN_PASSWORD}}"
+      }
+    }
+  }
+}
