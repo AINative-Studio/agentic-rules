@@ -7,24 +7,28 @@ This repository hosts a collection of coding‐standards and workflow “rules�
 
 ## Table of Contents
 
-1. [Purpose & Overview](#purpose--overview)  
-2. [Repository Structure](#repository-structure)  
-3. [Getting Started](#getting-started)  
-   - [Cloning the Repo](#cloning-the-repo)  
-   - [Rule Document Formats](#rule-document-formats)  
-4. [Usage in AINative Studio](#usage-in-ainative-studio)  
-   - [Configuring Cody](#configuring-cody)  
-   - [MCP Integration](#mcp-integration)  
-5. [Usage in Other IDEs](#usage-in-other-ides)  
-   - [VS Code (with AI Extensions)](#vs-code-with-ai-extensions)  
-   - [IntelliJ IDEA / WebStorm](#intellij-idea--webstorm)  
-   - [Other Agentic‐Enabled IDEs](#other-agentic-enabled-ides)  
-6. [Documentation & Rule Sets](#documentation--rule-sets)  
-   - [Core “MVP‐Focused” Rules](#core-mvp-focused-rules)  
-   - [Prototype Mode vs. Full Standards](#prototype-mode-vs-full-standards)  
-7. [Contributing Guidelines](#contributing-guidelines)  
-8. [Versioning & Releases](#versioning--releases)  
-9. [License](#license)
+1. [Purpose & Overview](#purpose--overview)
+2. [Repository Structure](#repository-structure)
+3. [Getting Started](#getting-started)
+   - [Cloning the Repo](#cloning-the-repo)
+   - [Rule Document Formats](#rule-document-formats)
+4. [Claude Code Templates](#claude-code-templates)
+   - [Quick Start](#quick-start)
+   - [Automated Setup](#automated-setup)
+   - [Template Contents](#template-contents)
+5. [Usage in AINative Studio](#usage-in-ainative-studio)
+   - [Configuring Cody](#configuring-cody)
+   - [MCP Integration](#mcp-integration)
+6. [Usage in Other IDEs](#usage-in-other-ides)
+   - [VS Code (with AI Extensions)](#vs-code-with-ai-extensions)
+   - [IntelliJ IDEA / WebStorm](#intellij-idea--webstorm)
+   - [Other Agentic‐Enabled IDEs](#other-agentic-enabled-ides)
+7. [Documentation & Rule Sets](#documentation--rule-sets)
+   - [Core "MVP‐Focused" Rules](#core-mvp-focused-rules)
+   - [Prototype Mode vs. Full Standards](#prototype-mode-vs-full-standards)
+8. [Contributing Guidelines](#contributing-guidelines)
+9. [Versioning & Releases](#versioning--releases)
+10. [License](#license)
 
 ---
 
@@ -54,38 +58,66 @@ Even if your organization does **not** use AINative Studio, adopting these rule 
 ## Repository Structure
 
 ```
-
 /agentic-rules
+├── CLAUDE.md                    # Project context for AI assistants
 ├── README.md
+├── .claude/
+│   └── rules/
+│       └── git-rules.md         # Git attribution policy
 ├── docs/
-│   ├── MVP-Focused-Rules.md
-│   ├── Full-Coding-Standards.md
-│   ├── HyperScaler-Integration-Guide.md
-│   ├── Example-MCP-Scripts.md
-│   └── Agentic-Prompts-Library.md
-├── examples/
-│   ├── sample-workflow\.vscode.json
-│   ├── sample-workflow\.intellij.xml
-│   ├── mcp-snippet.yaml
-│   └── deploy-function-template.tf
-└── CONTRIBUTING.md
+│   └── LLM_PROJECT_SETUP_PROMPT.md  # Universal LLM setup guide
+├── templates/
+│   └── claude-code/             # Claude Code project templates
+│       ├── README.md            # Template usage guide
+│       ├── CLAUDE.md.template   # Project context template
+│       ├── claude.json.template # MCP server configuration
+│       ├── settings.json.template
+│       ├── env.example          # Environment variables
+│       ├── .claude/
+│       │   ├── settings.local.json.example
+│       │   ├── agents/
+│       │   │   └── agent.md.template
+│       │   └── commands/
+│       │       ├── command.md.template
+│       │       ├── tdd.md
+│       │       ├── pr.md
+│       │       └── review.md
+│       └── scripts/
+│           ├── claude-code-setup.sh    # Interactive setup wizard
+│           └── merged-permissions.json  # Comprehensive permissions
+├── globalrules.md               # Universal agentic behavior rules
+├── MVP-GlobalRules.md           # Minimal viable rules
+├── meta-rules.md                # Rules about creating rules
+├── strict-rules-how-to.md       # Guide for enforcing critical rules
+├── Agent-Personas.md            # 25 specialized agent personas (pending)
+├── Agentic-Prompts-Library.md
+├── Enhanced-Agentic-Prompts-Library.md
+├── agent-reasoning-planning-execution.md
+└── LICENSE
+```
 
-````
+### Key Directories
 
-- **`docs/`**: Contains all rule documents in Markdown.  
-  - **`MVP-Focused-Rules.md`**: “Minimal Code, Rapid Prototyping” rule set.  
-  - **`Full-Coding-Standards.md`**: Comprehensive XP‐oriented coding standards.  
-  - **`HyperScaler-Integration-Guide.md`**: Detailed instructions for using Compute/Storage/Function APIs from major cloud providers.  
-  - **`Example-MCP-Scripts.md`**: Sample YAML/JSON snippets demonstrating how to send MCP messages for backlog updates, PR comments, and test scaffolding.  
-  - **`Agentic-Prompts-Library.md`**: A catalog of LLM prompts designed to drive the agent through each stage of the workflow (backlog, TDD, CI/CD, release).  
+- **`templates/claude-code/`**: Complete project templates for Claude Code CLI
+  - Configuration templates with `{{PLACEHOLDER}}` syntax
+  - Slash commands for TDD, PR creation, and code review
+  - Automated setup scripts for MCP servers
 
-- **`examples/`**: Contains IDE‐specific configuration or sample files.  
-  - **`sample-workflow.vscode.json`**: A sample VS Code tasks and settings file showing how to call MCP scripts.  
-  - **`sample-workflow.intellij.xml`**: Equivalent for IntelliJ IDEA or WebStorm.  
-  - **`mcp-snippet.yaml`**: A reusable MCP message template (e.g., for “Mark issue as in progress”).  
-  - **`deploy-function-template.tf`**: A minimal Terraform snippet for deploying a serverless function in an MVP style.
+- **`docs/`**: Documentation and guides
+  - **`LLM_PROJECT_SETUP_PROMPT.md`**: Universal prompt for any LLM to set up projects
 
-- **`CONTRIBUTING.md`**: Guidelines for submitting improvements, new examples, or updated rules.
+- **`.claude/rules/`**: Project-specific rules
+  - **`git-rules.md`**: Git commit attribution policy
+
+### Rule Documents
+
+| File | Purpose |
+|------|---------|
+| `globalrules.md` | Universal agentic behavior rules |
+| `MVP-GlobalRules.md` | Minimal viable rules for quick setup |
+| `meta-rules.md` | Rules about creating rules |
+| `strict-rules-how-to.md` | Guide for making rules stick |
+| `Agent-Personas.md` | 25 specialized LLM agent personas |
 
 ---
 
@@ -94,13 +126,82 @@ Even if your organization does **not** use AINative Studio, adopting these rule 
 ### Cloning the Repo
 
 ```bash
-git clone https://github.com/YourOrg/agentic-rules.git
+git clone https://github.com/AINative-Studio/agentic-rules.git
 cd agentic-rules
-````
+```
 
 ### Rule Document Formats
 
-All documents live under `docs/` in Markdown format. You can open them directly in any text editor or IDE. If your agentic plugin supports “live rule loading,” point the plugin’s “rules directory” to `/agentic-rules/docs/` to enable automated enforcement.
+All documents live under `docs/` in Markdown format. You can open them directly in any text editor or IDE. If your agentic plugin supports "live rule loading," point the plugin's "rules directory" to `/agentic-rules/docs/` to enable automated enforcement.
+
+---
+
+## Claude Code Templates
+
+This repository includes ready-to-use templates for setting up Claude Code projects with AINative services integration.
+
+### Quick Start
+
+```bash
+# From your project root:
+cp -r /path/to/agentic-rules/templates/claude-code/.claude ./.claude
+cp /path/to/agentic-rules/templates/claude-code/CLAUDE.md.template ./CLAUDE.md
+cp /path/to/agentic-rules/templates/claude-code/env.example ./.env
+
+# Rename example files
+mv .claude/settings.local.json.example .claude/settings.local.json
+
+# Edit files to match your project
+# Replace all {{PLACEHOLDER}} values with actual values
+```
+
+### Automated Setup
+
+Use the interactive setup script for guided configuration:
+
+```bash
+cd templates/claude-code/scripts
+
+# Check current configuration status
+./claude-code-setup.sh --check
+
+# Full installation (MCP servers, agents, commands)
+./claude-code-setup.sh --install
+
+# Apply permissions to current project
+./claude-code-setup.sh --init-project
+
+# Configure MCP servers only
+./claude-code-setup.sh --mcp-only
+```
+
+The script prompts for credentials interactively - no secrets are hardcoded.
+
+### Template Contents
+
+| Template | Purpose |
+|----------|---------|
+| `CLAUDE.md.template` | Project context and memory file |
+| `claude.json.template` | MCP server configuration (ZeroDB, Strapi, GitHub) |
+| `settings.json.template` | Global Claude settings |
+| `env.example` | Environment variables template |
+| `.claude/settings.local.json.example` | Project-specific permissions |
+| `.claude/commands/tdd.md` | TDD workflow slash command |
+| `.claude/commands/pr.md` | Pull request creation command |
+| `.claude/commands/review.md` | Code review checklist command |
+
+### Placeholder Reference
+
+All templates use `{{PLACEHOLDER}}` syntax for easy find-and-replace:
+
+| Placeholder | Description |
+|-------------|-------------|
+| `{{PROJECT_NAME}}` | Your project name |
+| `{{TECH_STACK}}` | e.g., "React, TypeScript, FastAPI" |
+| `{{ZERODB_PROJECT_ID}}` | From AINative dashboard |
+| `{{PROJECT_PATH}}` | Absolute path to project |
+
+For detailed template documentation, see [`templates/claude-code/README.md`](templates/claude-code/README.md).
 
 ---
 
