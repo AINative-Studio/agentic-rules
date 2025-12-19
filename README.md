@@ -1,4 +1,3 @@
-```markdown
 # Agentic Development Rules Repository
 
 This repository hosts a collection of coding‐standards and workflow “rules” documents designed to guide agent‐driven, XP‐oriented development workflows. While originally tailored for **AINative Studio** and its embedded agent **Cody**, these rules can be reused or adapted in any popular IDE that supports agentic assistants (e.g., VS Code with AI extensions, IntelliJ IDEA with “IntelliCode,” or other environments that support Model Context Protocol–driven agents).
