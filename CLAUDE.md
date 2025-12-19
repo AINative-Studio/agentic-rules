@@ -1,3 +1,26 @@
+## CRITICAL RULES - READ FIRST
+
+**Before making ANY git commit or PR, you MUST follow these rules:**
+
+| Action | Rule |
+|--------|------|
+| Commit messages | NO attribution to Claude, Anthropic, or any AI tool |
+| PR descriptions | NO "Generated with Claude Code" or similar text |
+| Co-Author tags | NEVER include "Co-Authored-By: Claude" |
+
+**FORBIDDEN in all git activity:**
+- "Claude"
+- "Anthropic"
+- "claude.com"
+- "Claude Code"
+- "Generated with Claude"
+- "Co-Authored-By: Claude"
+- Any reference to Claude or Anthropic whatsoever
+
+See `.claude/rules/git-rules.md` for full details. This is **ZERO TOLERANCE**.
+
+---
+
 # agentic-rules
 
 **Repository**: https://github.com/AINative-Studio/agentic-rules
