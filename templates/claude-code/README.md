@@ -81,8 +81,7 @@ For AINative service integration, copy `claude.json.template` to `~/.claude.json
       "args": ["-y", "ainative-zerodb-mcp-server"],
       "env": {
         "ZERODB_API_URL": "https://api.ainative.studio",
-        "ZERODB_USERNAME": "your-email",
-        "ZERODB_PASSWORD": "your-password",
+        "ZERODB_API_KEY": "your-api-key",
         "ZERODB_PROJECT_ID": "your-project-id"
       }
     }
