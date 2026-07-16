@@ -162,7 +162,7 @@ check_environment() {
     local vars=(
         "GITHUB_TOKEN"
         "ZERODB_API_URL"
-        "ZERODB_USERNAME"
+        "ZERODB_API_KEY"
         "ZERODB_PROJECT_ID"
         "STRAPI_URL"
         "ANTHROPIC_API_KEY"
@@ -249,12 +249,13 @@ install_mcp_zerodb() {
     echo "ZeroDB provides persistent memory for Claude Code."
     echo ""
 
-    # Prompt for credentials if not set
-    if [ -z "$ZERODB_USERNAME" ]; then
-        read -p "ZeroDB Username (email): " ZERODB_USERNAME
-    fi
-    if [ -z "$ZERODB_PASSWORD" ]; then
-        read -sp "ZeroDB Password: " ZERODB_PASSWORD
+    # Prompt for credentials if not set. Use the project-scoped API key (sk_...).
+    # NOTE: username/password auth is deprecated, and ainative-zerodb-mcp-server
+    # mis-prefers it over the API key (useStaticToken is only true when username/
+    # password are ABSENT), sending it down a broken login path — so setting both
+    # yields "Authentication failed: Connection error". Configure the key only.
+    if [ -z "$ZERODB_API_KEY" ]; then
+        read -sp "ZeroDB API Key (sk_...): " ZERODB_API_KEY
         echo ""
     fi
     if [ -z "$ZERODB_PROJECT_ID" ]; then
@@ -268,8 +269,7 @@ install_mcp_zerodb() {
     if [ -f "$CLAUDE_JSON" ]; then
         local tmp=$(mktemp)
         jq --arg url "$ZERODB_API_URL" \
-           --arg user "$ZERODB_USERNAME" \
-           --arg pass "$ZERODB_PASSWORD" \
+           --arg key "$ZERODB_API_KEY" \
            --arg proj "$ZERODB_PROJECT_ID" \
            '.mcpServers.zerodb = {
                "type": "stdio",
@@ -277,8 +277,7 @@ install_mcp_zerodb() {
                "args": ["-y", "ainative-zerodb-mcp-server"],
                "env": {
                    "ZERODB_API_URL": $url,
-                   "ZERODB_USERNAME": $user,
-                   "ZERODB_PASSWORD": $pass,
+                   "ZERODB_API_KEY": $key,
                    "ZERODB_PROJECT_ID": $proj
                }
            }' "$CLAUDE_JSON" > "$tmp" && mv "$tmp" "$CLAUDE_JSON"

@@ -111,8 +111,7 @@ Ask the user for their credentials or help them locate existing ones in:
       "args": ["-y", "ainative-zerodb-mcp-server"],
       "env": {
         "ZERODB_API_URL": "{{ZERODB_API_URL}}",
-        "ZERODB_USERNAME": "{{ZERODB_USERNAME}}",
-        "ZERODB_PASSWORD": "{{ZERODB_PASSWORD}}",
+        "ZERODB_API_KEY": "{{ZERODB_API_KEY}}",
         "ZERODB_PROJECT_ID": "{{ZERODB_PROJECT_ID}}"
       }
     }

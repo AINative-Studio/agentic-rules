@@ -14,8 +14,7 @@
       "args": ["-y", "ainative-zerodb-mcp-server"],
       "env": {
         "ZERODB_API_URL": "https://api.ainative.studio",
-        "ZERODB_USERNAME": "{{ZERODB_USERNAME}}",
-        "ZERODB_PASSWORD": "{{ZERODB_PASSWORD}}",
+        "ZERODB_API_KEY": "{{ZERODB_API_KEY}}",
         "ZERODB_PROJECT_ID": "{{ZERODB_PROJECT_ID}}"
       }
     },
