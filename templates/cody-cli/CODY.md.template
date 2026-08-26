@@ -1,0 +1,77 @@
+# {{PROJECT_NAME}}
+
+**Tech Stack**: {{TECH_STACK}}
+**Repository**: {{REPOSITORY_URL}}
+
+## Project Overview
+
+{{PROJECT_DESCRIPTION}}
+
+## Architecture
+
+### Data Storage
+- **Primary Database**: {{DATABASE_TYPE}}
+- **Vector Storage**: ZeroDB (via AINative API)
+- **Caching**: {{CACHING_STRATEGY}}
+
+### API Design
+- **Style**: {{API_STYLE}}
+- **Authentication**: {{AUTH_METHOD}}
+- **Base URL**: {{API_BASE_URL}}
+
+## Directory Structure
+
+```
+{{PROJECT_ROOT}}/
+├── {{DIR_1}}/          # {{DIR_1_DESC}}
+├── {{DIR_2}}/          # {{DIR_2_DESC}}
+├── {{DIR_3}}/          # {{DIR_3_DESC}}
+└── {{DIR_4}}/          # {{DIR_4_DESC}}
+```
+
+## Coding Conventions
+
+### Naming
+- **Files**: {{FILE_NAMING}}
+- **Functions**: camelCase
+- **Classes/Types**: PascalCase
+- **Constants**: UPPER_SNAKE_CASE
+
+### Code Style
+- 4-space indentation, target <= 80 chars per line
+- No AI attribution in commits, PRs, or code comments
+- Security: never log secrets/PII, validate inputs, least privilege
+
+## Build & Run
+
+```bash
+{{SETUP_COMMANDS}}
+```
+
+```bash
+{{RUN_COMMANDS}}
+```
+
+## Testing
+
+```bash
+{{TEST_COMMANDS}}
+```
+
+- Minimum 80% coverage for new code
+- BDD-style `describe/it` syntax
+- Tests must pass before any commit or PR
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and configure:
+
+```bash
+cp .env.example .env
+```
+
+## MCP Servers
+
+Configured in `.mcp.json`:
+- **zerodb**: Vector storage and semantic search
+- **github**: Issue tracking and PR management

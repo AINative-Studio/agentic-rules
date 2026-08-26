@@ -1,6 +1,6 @@
 # LLM Project Setup Prompt
 
-> A reusable prompt for any local-filesystem LLM (Claude Code, Gemini CLI, Aider, etc.) to help users establish a centralized project configuration system with templates and automation.
+> A reusable prompt for any local-filesystem LLM (Cody CLI, Claude Code, Gemini CLI, Cursor, Aider, etc.) to help users establish a centralized project configuration system with templates and automation.
 
 ---
 
@@ -20,10 +20,13 @@ Help the user create and maintain the following structure:
 ├── templates/
 │   ├── env.template             # Generic .env with {{PLACEHOLDERS}}
 │   ├── env.<username>           # User's personal credentials
-│   ├── claude.json.template     # MCP server configuration
-│   ├── settings.json.template   # Global LLM settings
-│   ├── settings.local.json.template  # Project permissions
-│   ├── CLAUDE.md.template       # Project context file
+│   ├── mcp.json.template        # MCP server configuration
+│   ├── settings.json.template   # Project permissions
+│   ├── CODY.md.template         # Project context file (Cody CLI)
+│   ├── CLAUDE.md.template       # Project context file (Claude Code)
+│   ├── .cursorrules.template    # Agent rules (Cursor)
+│   ├── .windsurfrules.template  # Agent rules (Windsurf)
+│   ├── GEMINI.md.template       # Project context file (Gemini CLI)
 │   ├── agent.md.template        # Custom agent definition
 │   └── command.md.template      # Custom slash command
 └── scripts/
@@ -67,7 +70,7 @@ DATABASE_URL={{DATABASE_URL}}
 # API Services (ZeroDB/AINative)
 ZERODB_PROJECT_ID={{ZERODB_PROJECT_ID}}
 ZERODB_API_KEY={{ZERODB_API_KEY}}
-ZERODB_API_URL={{ZERODB_API_URL}}
+ZERODB_API_URL=https://api.ainative.studio
 
 # AI Providers
 OPENAI_API_KEY={{OPENAI_API_KEY}}
@@ -75,10 +78,6 @@ ANTHROPIC_API_KEY={{ANTHROPIC_API_KEY}}
 
 # Authentication
 JWT_SECRET_KEY={{JWT_SECRET_KEY}}
-
-# OAuth (optional)
-LINKEDIN_CLIENT_ID={{LINKEDIN_CLIENT_ID}}
-LINKEDIN_CLIENT_SECRET={{LINKEDIN_CLIENT_SECRET}}
 ```
 
 #### 4. Create User's Personal Credentials File
@@ -89,13 +88,12 @@ Create `templates/env.<username>` with the user's actual credentials. This file:
 - Can be copied to any project's `.env`
 
 Ask the user for their credentials or help them locate existing ones in:
-- `~/.claude.json` (MCP server configs)
 - Existing project `.env` files
 - Environment variables (`env | grep -i api`)
 
 #### 5. Create Platform-Specific Templates
 
-**For Claude Code** - `templates/claude.json.template`:
+**MCP Configuration** — `templates/mcp.json.template` (works with Cody CLI, Claude Code, Cursor, Windsurf):
 ```json
 {
   "mcpServers": {
@@ -106,43 +104,32 @@ Ask the user for their credentials or help them locate existing ones in:
       "env": { "GITHUB_TOKEN": "{{GITHUB_TOKEN}}" }
     },
     "zerodb": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "ainative-zerodb-mcp-server"],
-      "env": {
-        "ZERODB_API_URL": "{{ZERODB_API_URL}}",
-        "ZERODB_API_KEY": "{{ZERODB_API_KEY}}",
-        "ZERODB_PROJECT_ID": "{{ZERODB_PROJECT_ID}}"
-      }
+      "type": "sse",
+      "url": "https://api.ainative.studio/v1/mcp/zerodb-mcp/messages",
+      "headers": { "x-api-key": "{{ZERODB_API_KEY}}" }
     }
   }
 }
 ```
 
-**Project Context** - `templates/CLAUDE.md.template`:
-```markdown
-# {{PROJECT_NAME}}
+**Project Context** — use the appropriate template for your IDE:
 
-**Tech Stack**: {{TECH_STACK}}
-**Last Updated**: {{DATE}}
+| IDE | Template | File Name |
+|-----|----------|-----------|
+| Cody CLI | `CODY.md.template` | `CODY.md` |
+| Claude Code | `CLAUDE.md.template` | `CLAUDE.md` |
+| Cursor | `.cursorrules.template` | `.cursorrules` |
+| Windsurf | `.windsurfrules.template` | `.windsurfrules` |
+| Gemini CLI | `GEMINI.md.template` | `GEMINI.md` |
 
-## Architecture
-{{ARCHITECTURE_NOTES}}
-
-## Coding Conventions
-{{CONVENTIONS}}
-
-## Critical Files
-{{CRITICAL_FILES}}
-```
-
-**Project Permissions** - `templates/settings.local.json.template`:
+**Project Permissions** — `templates/settings.json.template`:
 ```json
 {
   "permissions": {
     "allow": [
       "Bash(git:*)",
       "Bash(npm:*)",
+      "Bash(bun:*)",
       "mcp__github__*",
       "mcp__zerodb__*"
     ],
@@ -159,19 +146,18 @@ Create `scripts/setup-project.sh`:
 ```bash
 #!/bin/bash
 # Project Setup Script
-# Usage: ./setup-project.sh <project-path> [username]
+# Usage: ./setup-project.sh <project-path> [ide] [username]
+# IDE options: cody, claude, cursor, windsurf, gemini
 
 set -e
 
 PROJECT_PATH="${1:-.}"
-USERNAME="${2:-$(whoami)}"
+IDE="${2:-cody}"
+USERNAME="${3:-$(whoami)}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TEMPLATES_DIR="$(dirname "$SCRIPT_DIR")/templates"
 
-echo "Setting up project at: $PROJECT_PATH"
-
-# Create project directories
-mkdir -p "$PROJECT_PATH/.claude"
+echo "Setting up $IDE project at: $PROJECT_PATH"
 
 # Copy and configure .env
 if [ -f "$TEMPLATES_DIR/env.$USERNAME" ]; then
@@ -182,22 +168,51 @@ else
     echo "Created .env from generic template - please configure"
 fi
 
-# Copy permissions template
-cp "$TEMPLATES_DIR/settings.local.json.template" "$PROJECT_PATH/.claude/settings.local.json"
-sed -i "s|{{PROJECT_PATH}}|$PROJECT_PATH|g" "$PROJECT_PATH/.claude/settings.local.json"
+# IDE-specific setup
+case "$IDE" in
+    cody)
+        mkdir -p "$PROJECT_PATH/.cody/rules" "$PROJECT_PATH/.cody/agents" "$PROJECT_PATH/.cody/commands"
+        [ ! -f "$PROJECT_PATH/CODY.md" ] && cp "$TEMPLATES_DIR/CODY.md.template" "$PROJECT_PATH/CODY.md"
+        cp "$TEMPLATES_DIR/settings.json.template" "$PROJECT_PATH/.cody/settings.json"
+        cp "$TEMPLATES_DIR/mcp.json.template" "$PROJECT_PATH/.mcp.json"
+        echo "Created CODY.md, .cody/, .mcp.json"
+        ;;
+    claude)
+        mkdir -p "$PROJECT_PATH/.claude"
+        [ ! -f "$PROJECT_PATH/CLAUDE.md" ] && cp "$TEMPLATES_DIR/CLAUDE.md.template" "$PROJECT_PATH/CLAUDE.md"
+        cp "$TEMPLATES_DIR/settings.json.template" "$PROJECT_PATH/.claude/settings.local.json"
+        cp "$TEMPLATES_DIR/mcp.json.template" "$PROJECT_PATH/.mcp.json"
+        echo "Created CLAUDE.md, .claude/, .mcp.json"
+        ;;
+    cursor)
+        mkdir -p "$PROJECT_PATH/.cursor"
+        [ ! -f "$PROJECT_PATH/.cursorrules" ] && cp "$TEMPLATES_DIR/.cursorrules.template" "$PROJECT_PATH/.cursorrules"
+        cp "$TEMPLATES_DIR/mcp.json.template" "$PROJECT_PATH/.cursor/mcp.json"
+        echo "Created .cursorrules, .cursor/mcp.json"
+        ;;
+    windsurf)
+        mkdir -p "$PROJECT_PATH/.windsurf"
+        [ ! -f "$PROJECT_PATH/.windsurfrules" ] && cp "$TEMPLATES_DIR/.windsurfrules.template" "$PROJECT_PATH/.windsurfrules"
+        cp "$TEMPLATES_DIR/mcp.json.template" "$PROJECT_PATH/.windsurf/mcp.json"
+        echo "Created .windsurfrules, .windsurf/mcp.json"
+        ;;
+    gemini)
+        mkdir -p "$PROJECT_PATH/.gemini"
+        [ ! -f "$PROJECT_PATH/GEMINI.md" ] && cp "$TEMPLATES_DIR/GEMINI.md.template" "$PROJECT_PATH/GEMINI.md"
+        cp "$TEMPLATES_DIR/mcp.json.template" "$PROJECT_PATH/.gemini/settings.json"
+        echo "Created GEMINI.md, .gemini/"
+        ;;
+    *)
+        echo "Unknown IDE: $IDE (use: cody, claude, cursor, windsurf, gemini)"
+        exit 1
+        ;;
+esac
 
-# Create CLAUDE.md if it doesn't exist
-if [ ! -f "$PROJECT_PATH/CLAUDE.md" ]; then
-    cp "$TEMPLATES_DIR/CLAUDE.md.template" "$PROJECT_PATH/CLAUDE.md"
-    echo "Created CLAUDE.md - please customize"
-fi
-
-echo "Project setup complete!"
 echo ""
-echo "Next steps:"
+echo "Setup complete! Next steps:"
 echo "1. Edit .env with any missing credentials"
-echo "2. Customize CLAUDE.md with project details"
-echo "3. Review .claude/settings.local.json permissions"
+echo "2. Customize the project context file with project details"
+echo "3. Replace all {{PLACEHOLDER}} values"
 ```
 
 Make executable: `chmod +x scripts/setup-project.sh`
@@ -215,22 +230,14 @@ Create `<PLATFORM>_SETUP.md` documenting:
 
 **Setting up a new project:**
 ```bash
-# Using the script
-./docs/scripts/setup-project.sh /path/to/new/project quaid
+# Using the script (defaults to Cody CLI)
+./docs/scripts/setup-project.sh /path/to/new/project cody
 
-# Or manually
-cp docs/templates/env.quaid /path/to/new/project/.env
-cp docs/templates/CLAUDE.md.template /path/to/new/project/CLAUDE.md
-```
+# For Cursor
+./docs/scripts/setup-project.sh /path/to/new/project cursor
 
-**Updating credentials across projects:**
-```bash
-# Edit the central credentials file
-vim docs/templates/env.quaid
-
-# Copy to projects that need updating
-cp docs/templates/env.quaid project1/.env
-cp docs/templates/env.quaid project2/.env
+# For Claude Code
+./docs/scripts/setup-project.sh /path/to/new/project claude
 ```
 
 **Adding a new template:**
@@ -243,27 +250,21 @@ cp docs/templates/env.quaid project2/.env
 
 1. **Centralization**: One place for all templates and credentials
 2. **Separation**: Generic templates vs. user-specific credentials
-3. **Portability**: Works across different LLM tools (Claude, Gemini, etc.)
+3. **Portability**: Works across different LLM tools and IDEs
 4. **Security**: Credentials files never committed to git
 5. **Automation**: Scripts reduce manual setup errors
 
-### Placeholder Convention
+### IDE Configuration Reference
 
-Use double curly braces for all configurable values:
-- `{{PROJECT_NAME}}` - Will be replaced during setup
-- `{{ZERODB_API_KEY}}` - Credentials from user's env file
-- `{{DATE}}` - Auto-populated by script
-
-### For Other LLM Platforms
-
-This system works with any LLM that has filesystem access:
-
-| Platform | Config Location | Notes |
-|----------|-----------------|-------|
-| Claude Code | `~/.claude.json`, `~/.claude/` | Full MCP support |
-| Gemini CLI | `~/.gemini/` | Adapt templates as needed |
-| Aider | `~/.aider/` | Uses .env natively |
-| Continue | `~/.continue/` | JSON config format |
+| IDE | Context File | Config Dir | MCP Config | Rules |
+|-----|-------------|------------|------------|-------|
+| Cody CLI | `CODY.md` | `.cody/` | `.mcp.json` | `.cody/rules/` |
+| Claude Code | `CLAUDE.md` | `.claude/` | `.mcp.json` | `.claude/rules/` |
+| Cursor | `.cursorrules` | `.cursor/` | `.cursor/mcp.json` | `.cursorrules` |
+| Windsurf | `.windsurfrules` | `.windsurf/` | `.windsurf/mcp.json` | `.windsurfrules` |
+| Gemini CLI | `GEMINI.md` | `.gemini/` | `.gemini/settings.json` | `GEMINI.md` |
+| Aider | — | `~/.aider/` | — | `.aider.conf.yml` |
+| Continue | — | `~/.continue/` | `.continue/config.json` | — |
 
 Adapt the templates to each platform's configuration format while keeping the central docs structure consistent.
 
@@ -277,6 +278,7 @@ If you're setting this up for the first time:
 2. **I'll create the directory structure**
 3. **Share your existing credentials** (or I'll help find them)
 4. **I'll create your personal env file**
-5. **We'll test with a sample project**
+5. **Which IDE(s) do you use?** (I'll create the right templates)
+6. **We'll test with a sample project**
 
 What's your preferred location for the central docs folder?
