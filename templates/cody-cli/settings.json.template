@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git status:*)",
+      "Bash(git branch:*)",
+      "Bash(bun test:*)",
+      "Bash(bun run:*)",
+      "Bash(bun install:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(npm test:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(wc:*)",
+      "mcp__github__list_issues",
+      "mcp__github__get_issue",
+      "mcp__github__update_issue",
+      "mcp__github__create_pull_request",
+      "mcp__github__get_pull_request",
+      "mcp__github__add_issue_comment",
+      "mcp__github__search_code",
+      "mcp__zerodb__zerodb_store_memory",
+      "mcp__zerodb__zerodb_search_memory",
+      "mcp__zerodb__zerodb_semantic_search"
+    ],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(sudo rm:*)",
+      "Bash(chmod 777:*)"
+    ]
+  }
+}

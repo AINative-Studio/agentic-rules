@@ -1,0 +1,61 @@
+# {{PROJECT_NAME}} — Gemini CLI Context
+
+## Project
+
+{{PROJECT_DESCRIPTION}}
+
+**Tech Stack**: {{TECH_STACK}}
+**Repository**: {{REPOSITORY_URL}}
+
+## Standards
+
+### Code Quality
+- camelCase for variables/functions, PascalCase for classes/types
+- 4-space indentation, target <= 80 chars per line
+- Comments only when the WHY is non-obvious
+- No dead code — remove unused imports, variables, functions
+
+### Security
+- Never log secrets or PII
+- Validate input at system boundaries
+- No hardcoded credentials — use environment variables
+- API keys: `sk_` prefix for AINative platform tokens
+
+### Testing
+- TDD: write failing test first, implement, refactor
+- Minimum 80% coverage for new code
+- BDD-style `describe/it` blocks
+
+### Git — ZERO TOLERANCE
+- No AI attribution in commits, PRs, issues, or code comments
+- No "Claude", "Anthropic", "ChatGPT", "Copilot", "OpenAI" references
+- Clean conventional commit messages
+
+## Architecture
+
+```
+{{PROJECT_ROOT}}/
+├── {{DIR_1}}/          # {{DIR_1_DESC}}
+├── {{DIR_2}}/          # {{DIR_2_DESC}}
+├── {{DIR_3}}/          # {{DIR_3_DESC}}
+└── {{DIR_4}}/          # {{DIR_4_DESC}}
+```
+
+## Commands
+
+```bash
+# Setup
+{{SETUP_COMMANDS}}
+
+# Run
+{{RUN_COMMANDS}}
+
+# Test
+{{TEST_COMMANDS}}
+```
+
+## AINative Platform
+
+- **API**: https://api.ainative.studio
+- **Vector DB**: ZeroDB
+- **Auth**: OAuth 2.1 + PKCE or API key (sk_ prefix)

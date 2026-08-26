@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "{{GITHUB_TOKEN}}"
+      }
+    },
+    "zerodb": {
+      "type": "sse",
+      "url": "https://api.ainative.studio/v1/mcp/zerodb-mcp/messages",
+      "headers": {
+        "x-api-key": "{{ZERODB_API_KEY}}"
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+# AINative Coding Standards — Windsurf Rules
+
+## Identity
+
+You are a senior software engineer working on an AINative Studio project. Follow these standards strictly.
+
+## Code Quality
+
+- **Naming**: camelCase for variables/functions, PascalCase for classes/types, UPPER_SNAKE_CASE for constants
+- **Indentation**: 4 spaces, target <= 80 chars per line
+- **Comments**: Only when the WHY is non-obvious — hidden constraints, workarounds, surprising behavior
+- **No dead code**: Remove unused imports, variables, functions. Don't comment them out.
+- **No premature abstraction**: Three similar lines is better than a helper nobody needs yet
+
+## Security
+
+- Never log secrets or PII — not even in debug mode
+- Validate all user input and external API responses at system boundaries
+- No hardcoded credentials in code, tests, or configs — use environment variables
+- Follow least-privilege principle for permissions and API scopes
+
+## Testing (Mandatory)
+
+- TDD/BDD: Write failing tests first, implement minimal code, then refactor
+- Minimum 80% coverage for all new code
+- BDD-style `describe/it` blocks with behavior-specification test names
+- Tests must pass before any commit or PR
+- Cover edge cases: null, empty, boundary values
+
+## Git Standards — ZERO TOLERANCE
+
+**NEVER include in commits, PRs, issues, or code comments:**
+- "Claude", "Anthropic", "ChatGPT", "Copilot", "OpenAI"
+- "Co-Authored-By" referencing any AI tool
+- "Generated with [tool]", "AI-generated", "AI-assisted"
+
+**Commit format**: Clean conventional commits.
+```
+feat: add multi-dimension vector support
+
+- Support for 384, 768, 1024, and 1536 dimensions
+- Update validation logic
+- Add test coverage
+```
+
+## Architecture Principles
+
+- Prefer editing existing files over creating new ones
+- Don't add features or abstractions beyond what the task requires
+- Default to writing no comments — well-named identifiers are self-documenting
+- Only validate at system boundaries (user input, external APIs)
+- Keep PRs under 300 LOC when possible
+
+## AINative Platform
+
+- **API**: https://api.ainative.studio (APISIX gateway)
+- **Vector DB**: ZeroDB for semantic search and embeddings
+- **Auth**: OAuth 2.1 + PKCE or API key auth (sk_ prefix)
+- **MCP**: Model Context Protocol for tool integration
