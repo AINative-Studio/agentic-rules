@@ -4,24 +4,48 @@
 **Purpose**: IDE-agnostic agent rules, coding standards, and project templates for agentic development
 **Last Updated**: 2026-08-26
 
-## Project Overview
+## Critical Rules
 
-Reusable configuration templates and rule files for AI-assisted development environments. Supports Cody CLI, Claude Code, Cursor, Windsurf, VS Code, and Gemini CLI.
+- All templates use `{{PLACEHOLDER}}` syntax — never commit real API keys, tokens, or personal data
+- No AI attribution in commits, PRs, or code comments — zero tolerance
+- Preserve placeholder syntax when editing templates
+- Test template changes with `bash tests/templates.test.sh` before committing
 
-## Directory Structure
+## Project Structure
 
 ```
 agentic-rules/
 ├── templates/
-│   ├── cody-cli/              # Cody CLI templates (.cody/ rules, agents, commands)
-│   ├── claude-code/           # Claude Code templates (.claude/ directory)
-│   ├── cursor/                # Cursor rules (.cursorrules, .cursor/mcp.json)
-│   ├── windsurf/              # Windsurf rules (.windsurfrules, .windsurf/mcp.json)
-│   ├── vscode/                # VS Code settings and snippets
-│   └── gemini-cli/            # Gemini CLI templates (GEMINI.md, .gemini/)
+│   ├── cody-cli/              # Cody CLI (.cody/ rules, agents, commands)
+│   ├── claude-code/           # Claude Code (.claude/ directory)
+│   ├── cursor/                # Cursor (.cursorrules, .cursor/mcp.json)
+│   ├── windsurf/              # Windsurf (.windsurfrules, .windsurf/mcp.json)
+│   ├── vscode/                # VS Code (settings, snippets)
+│   └── gemini-cli/            # Gemini CLI (GEMINI.md, .gemini/)
+├── tests/                     # Template validation tests
 ├── docs/                      # Documentation and reports
+├── .github/                   # Issue templates, CI workflows
 ├── *.md                       # Global rule files and guides
 └── CLAUDE.md                  # This file
+```
+
+## Common Tasks
+
+### Adding a new IDE template
+1. Create `templates/<ide-name>/` with the IDE's config files
+2. Include MCP config for ZeroDB and GitHub
+3. Apply AINative coding standards (code quality, TDD, security, git rules)
+4. Add to the IDE support table in `README.md`
+5. Run `bash tests/templates.test.sh`
+
+### Editing existing templates
+1. Preserve `{{PLACEHOLDER}}` syntax for all configurable values
+2. Validate JSON with `python3 -c "import json; json.load(open('file.json'))"`
+3. Run tests before committing
+
+### Running tests
+```bash
+bash tests/templates.test.sh
 ```
 
 ## Key Files
@@ -38,16 +62,7 @@ agentic-rules/
 
 ## Development Workflow
 
-### Branch Naming
-- `feature/<description>` — New features or templates
-- `fix/<description>` — Bug fixes or corrections
-- `docs/<description>` — Documentation updates
-
-### Commit Convention
-- Clean conventional commits: describe what and why
-- No AI attribution — zero tolerance
-
-### Security
-- All templates use `{{PLACEHOLDER}}` syntax for configurable values
-- Never commit API keys, tokens, passwords, or personal data
-- When editing templates, preserve placeholder syntax
+- Branch: `feature/<description>`, `fix/<description>`, `docs/<description>`
+- Commits: clean conventional format, no AI attribution
+- Tests: `bash tests/templates.test.sh` must pass
+- Security: never commit secrets, use `{{PLACEHOLDER}}` syntax
